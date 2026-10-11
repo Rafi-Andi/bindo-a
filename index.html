@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PUSMENDIK - Latihan Bahasa Indonesia Paket 1</title>
+<style>
+*{box-sizing:border-box;font-family:"Segoe UI",Arial,sans-serif}
+body{margin:0;background:#e9edf1;color:#222}
+:root{--soal-font:16px}
+.topbar{background:linear-gradient(120deg,#1e5b97 60%,#2a71b8 100%);color:#fff;padding:14px 24px 38px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:54px;height:54px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;border:3px solid #ffcc00}
+.brand b{font-size:17px;letter-spacing:.5px}
+.brand small{font-size:12px;opacity:.9}
+.user{font-size:13px;display:flex;align-items:center;gap:8px}
+.user span.icon{background:#4da3ff;border-radius:4px;padding:4px 8px}
+.card{max-width:1220px;margin:-28px auto 30px;background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.15);overflow:hidden}
+.card-head{display:flex;justify-content:space-between;align-items:center;padding:16px 22px 6px;flex-wrap:wrap;gap:10px}
+.card-head h2{font-size:18px;font-weight:500;margin:0}
+.pills{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{border-radius:20px;padding:7px 14px;font-size:12px;font-weight:600;border:1px solid #ddd;background:#fff;cursor:pointer}
+.pill.blue{background:#0d8bf2;color:#fff;border-color:#0d8bf2}
+.pill.timer{background:#f2f2f2;color:#333}
+.subhead{display:flex;justify-content:space-between;padding:0 22px 10px;font-size:13px;color:#444;border-bottom:1px solid #eee;flex-wrap:wrap;gap:8px}
+.fontbtn{cursor:pointer;margin-right:8px;color:#555}
+.fontbtn:hover{color:#0d8bf2}
+.main{display:flex;gap:0;min-height:520px}
+.left{flex:1.15;border:1px solid #ddd;margin:16px 0 16px 16px;padding:16px 18px;overflow-y:auto;max-height:560px;font-size:var(--soal-font);line-height:1.7;background:#fff}
+.right{flex:1;border:1px solid #ddd;margin:16px 16px 16px 0;padding:16px 18px;overflow-y:auto;max-height:560px;font-size:var(--soal-font);line-height:1.6;background:#fff;border-left:none}
+@media(max-width:900px){.main{flex-direction:column}.left,.right{margin:10px;max-height:none;border-left:1px solid #ddd}}
+.passage-title{text-align:center;font-weight:700;margin-bottom:12px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:8px;margin:8px 0;cursor:pointer;border:1px solid transparent}
+.opt:hover{background:#f5f9ff;border-color:#cfe3ff}
+.opt input{margin-top:4px;transform:scale(1.2)}
+.opt.correct{background:#e6f7e9;border-color:#2ecc71}
+.opt.wrong{background:#fdecea;border-color:#e74c3c}
+.opt.dim{opacity:.85}
+table.bs{width:100%;border-collapse:collapse;margin-top:10px;font-size:15px}
+table.bs th,table.bs td{border:1px solid #ddd;padding:8px}
+table.bs th{background:#f5f5f5}
+.row-ok{background:#e6f7e9}
+.row-bad{background:#fdecea}
+.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:700}
+.badge.ok{background:#27ae60;color:#fff}
+.badge.bad{background:#e74c3c;color:#fff}
+.explain{margin-top:14px;background:#eef6ff;border-left:5px solid #0d8bf2;padding:12px 14px;border-radius:0 8px 8px 0;font-size:15px;line-height:1.6;display:none}
+.explain.show{display:block}
+.explain b.t{color:#0d8bf2}
+.btnrow{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-top:1px solid #eee;flex-wrap:wrap;gap:10px}
+.btn{border:none;border-radius:20px;padding:10px 22px;font-weight:600;cursor:pointer;font-size:14px}
+.btn.red{background:#d63031;color:#fff}
+.btn.yellow{background:#f7b500;color:#fff}
+.btn.blue{background:#0d8bf2;color:#fff}
+.btn.check{background:#fff;border:2px solid #0d8bf2;color:#0d8bf2}
+.btn.ghost{background:#eee}
+.progress{font-size:13px;color:#555}
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.box{background:#fff;border-radius:12px;max-width:600px;width:100%;padding:20px;max-height:80vh;overflow:auto}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:12px}
+.cell{border-radius:8px;padding:12px;text-align:center;cursor:pointer;font-weight:700;border:2px solid #ddd;background:#f7f7f7}
+.cell.cur{border-color:#0d8bf2}
+.cell.ragu{background:#fff3cd;border-color:#f7b500}
+.cell.benar{background:#27ae60;color:#fff;border-color:#27ae60}
+.cell.salah{background:#e74c3c;color:#fff;border-color:#e74c3c}
+.score{margin-top:12px;background:#f2f6ff;padding:10px;border-radius:8px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="topbar">
+<div class="brand"><div class="logo">🎓</div><div><b>PUSMENDIK</b><br><small>APLIKASI ANBK</small></div></div>
+<div class="user">P130100230 - r <span class="icon">🎓</span></div>
+</div>
+
+<div class="card">
+<div class="card-head">
+<h2 id="nomor">Soal nomor 1</h2>
+<div class="pills">
+<button class="pill blue" onclick="alert('Teks bacaan ada di panel kiri. Jawab lalu klik Periksa Jawaban untuk melihat pembahasan.')">INFORMASI SOAL</button>
+<span class="pill timer">Sisa Waktu : <span id="timer">01:14:53</span></span>
+<button class="pill blue" onclick="openDaftar()">Daftar Soal ▦</button>
+</div>
+</div>
+<div class="subhead">
+<div>Ukuran font soal: <span class="fontbtn" style="font-size:12px" onclick="setFont(14)">A</span><span class="fontbtn" style="font-size:16px" onclick="setFont(17)">A</span><span class="fontbtn" style="font-size:20px" onclick="setFont(21)">A</span></div>
+<div>Bahasa Indonesia (Paket 1)</div>
+</div>
+
+<div class="main">
+<div class="left" id="teks"></div>
+<div class="right" id="soal"></div>
+</div>
+
+<div class="btnrow">
+<button class="btn red" onclick="nav(-1)">◀ Soal sebelumnya</button>
+<button class="btn yellow" id="raguBtn" onclick="toggleRagu()">☐ Ragu-ragu</button>
+<div style="display:flex;gap:8px;align-items:center"><span class="progress" id="prog"></span><button class="btn check" onclick="periksa()">Periksa Jawaban</button><button class="btn blue" onclick="nav(1)">Soal berikutnya ▶</button></div>
+</div>
+</div>
+
+<div class="modal" id="modal"><div class="box">
+<h3 style="margin:0">Daftar Soal <button style="float:right" onclick="closeDaftar()">✕</button></h3>
+<div class="grid" id="grid"></div>
+<div class="score" id="score"></div>
+<div style="margin-top:10px"><button class="btn blue" onclick="closeDaftar()">Tutup</button> <button class="btn ghost" onclick="resetAll()">Reset semua</button></div>
+</div></div>
+
+<script>
+const PASSAGE_A = `<div class="passage-title">Lautan, Plastik, dan Solusi</div>
+<p>Lautan mengalami ancaman pemanasan dan menjadi semakin asam karena kita terus memompa lebih banyak CO2 ke atmosfer. Selain itu, lautan juga menghadapi ancaman lain dari manusia, yakni penggunaan plastik. Kehidupan modern saat ini didominasi oleh kemasan makanan berbahan plastik yang diolah dengan teknologi tinggi dan digunakan setiap hari oleh masyarakat. Dalam sebuah laporan telah disebutkan bahwa pada tahun 2050 sampah plastik di laut akan lebih banyak daripada jumlah ikan apabila kecenderungan ini terus berlanjut. Hal tersebut merupakan sebuah ancaman besar.</p>
+<p>Dibutuhkan tindakan skala besar untuk berpindah dari kecenderungan tersebut mengingat banyak pihak yang terlibat dalam bidang pekerjaan ini. Masyarakat sektor swasta dan masyarakat sipil perlu mobilisasi untuk menangkap peluang ekonomi lain di luar dari pengelolaan plastik.</p>
+<p>Solusi tersebut tidak mudah. Fakta bahwa harga minyak yang rendah mengakibatkan biaya yang dibutuhkan untuk daur ulang plastik jauh lebih mahal daripada memproduksi yang baru. Kondisi lain yang menunjukkan ekonomi di negara berkembang tumbuh lebih besar menjadikan penggunaan plastik juga meningkat. Solusi yang dibutuhkan adalah cara kita menggunakan plastik. Misalnya dengan mengurangi penggunaan plastik dalam kemasan atau menggunakannya kembali sebanyak yang kita bisa.</p>
+<p>Produsen plastik juga dapat membantu dalam pengelolaan plastik, seperti memproduksi barang-barang plastik yang dapat digunakan kembali atau beralih ke plastik yang dapat dijadikan kompos. Solusi apa pun akan membawa perubahan besar dalam cara menggunakan produk yang terbuat dari plastik.</p>`;
+
+const PASSAGE_B = `<div class="passage-title">Piala di Atas Dangau <br><small>(Muhammad Isrul, dengan penyesuaian)</small></div>
+<p>“E...gurumu itu orang desa ini juga. Pasti tahu bahwa saat ini musim <i>maddongi</i> (mengusir burung saat buah padi mulai menguning). Besok kau menghadap, sampaikan bahwa kau membantu Ayah di sawah. Nah, pasti gurumu mengerti mengapa kamu tidak ke sekolah.”</p>
+<p>Aku terpana. Jawaban Ayah benar-benar membuatku hampir menangis histeris. Bagaimana tidak. Lomba semakin dekat, sementara masih banyak materi yang belum aku paham. Terbayang aku akan hancur dan tidak bisa bersaing dengan siswa sekolah lain. Ingin rasanya aku berteriak agar Ayahku tahu bagaimana kacaunya pikiranku. Namun, aku sadar bahwa ini adalah perbuatan yang tidak akan menyelesaikan masalah. Malah akan semakin membuat Ayahku geram. Otakku terus berpikir untuk mencari solusi terbaik. Sambil berjalan mengikuti Ayah dari belakang, aku mulai menyusun strategi. “Bagaimana kalau aku ke rumah <i>iyye</i>-ku (nenek), menyampaikan masalahku ini. Ya, hanya dia yang mampu menundukkan Ayah.”</p>
+<p>Esok harinya, sepulang sekolah, kuayunkan sepedaku menuju rumah <i>iyye</i>-ku.</p>
+<p>“Kenapa kamu lesu?” Iyye menanyakan keadaanku. Aku pun menceritakan semuanya kepada iyye.</p>
+<p>“Ya sudah, tidak usah sedih. Nanti kusampaikan pada ayahmu. Kau ke dalam, makan dulu, baru pulang,” ujar <i>iyye</i>-ku.</p>`;
+
+const PASSAGE_C = `<div class="passage-title">Rhodamin B</div>
+<p><b>Teks 1</b><br>Rhodamin B adalah zat pewarna yang tersedia di pasar untuk industri tekstil. Zat ini sering disalahgunakan sebagai zat pewarna makanan dan kosmetik di berbagai negara. Jenis makanan yang mengandung Rhodamin B di antaranya kerupuk, terasi, dan makanan ringan. Zat ini juga banyak ditemukan pada kembang gula, sirup, manisan, dawet, bubur, ikan asap, dan cendol. Tampilan makanan yang menggunakan zat ini cenderung menarik dan terkesan menawarkan cita rasa tinggi sehingga ketika harga jualnya tidak semahal tampilannya, banyak yang tertarik untuk membeli dan mengonsumsinya. Zat ini paling berbahaya bila dikonsumsi karena menyebabkan gangguan pada fungsi hati, bahkan kanker hati. Apabila mengonsumsi makanan yang mengandung Rhodamin B, dalam tubuh akan terjadi penumpukan lemak sehingga lama-kelamaan jumlahnya akan terus bertambah. Dampaknya baru akan kelihatan setelah puluhan tahun kemudian. Jika sudah masuk dalam tubuh, akan mengendap pada jaringan hati dan lemak, tidak dapat dikeluarkan, dan dalam jangka waktu lama bisa bersifat karsinogenik.</p>
+<p><b>Teks 2</b><br>Rhodamin B berbentuk serbuk kristal, berwarna hijau atau ungu kemerahan, tidak berbau, dan dalam larutan akan berwarna merah terang berpendar atau berfluoresensi. Rhodamin B merupakan zat warna golongan xanthenes dyes, dan digunakan pada industri tekstil dan kertas, sebagai pewarna kain, kosmetika, produk pembersih mulut, dan sabun. Rhodamin B memiliki berbagai nama lain, antara lain: Tetra ethyl rhodamin; Rheoninine B, D, & C; Red No. 19; Food Red 15; ADC Rhodamine B; Aizen Rhodamine; dan Brilliant Pink B. Rhodamin B mengandung senyawa klorin (Cl) yang merupakan senyawa halogen yang berbahaya dan reaktif. Jika tertelan, senyawa ini akan berusaha mencapai kestabilan dalam tubuh dengan cara mengikat senyawa lain dalam tubuh. Mengonsumsi bahan pangan yang mengandung Rhodamin B dalam jangka panjang dapat terakumulasi di dalam tubuh dan dapat menyebabkan gejala pembesaran hati dan ginjal, gangguan fungsi hati, kerusakan hati, gangguan fisiologis tubuh, bahkan dapat menyebabkan timbulnya kanker hati.</p>`;
+
+const PASSAGE_D = `<div class="passage-title">Dampak Ekonomi Digital terhadap Pertumbuhan UKM<br><small>(Sumber: Kementerian Koperasi dan UKM RI)</small></div>
+<p>Ekonomi digital telah membawa perubahan besar dalam berbagai aspek bisnis, terutama bagi Usaha Kecil dan Menengah (UKM). Dengan adanya teknologi digital, UKM kini memiliki peluang lebih besar untuk berkembang dan bersaing di pasar yang lebih luas. Transformasi ini didorong oleh beberapa faktor utama, seperti perkembangan e-commerce, sistem pembayaran digital, pemasaran berbasis data, serta pemanfaatan teknologi berbasis kecerdasan buatan (artificial intelligence).</p>
+<p>Salah satu perubahan signifikan dalam ekonomi digital adalah kemudahan akses ke platform e-commerce. UKM yang sebelumnya hanya mengandalkan toko fisik kini dapat menjual produknya melalui berbagai marketplace daring. Hal ini memungkinkan mereka menjangkau konsumen di luar wilayah lokal, bahkan hingga ke pasar internasional. Dengan biaya operasional yang lebih rendah dibandingkan toko fisik, UKM dapat mengalokasikan dana untuk inovasi dan peningkatan kualitas produk. Selain itu, sistem pengiriman yang semakin efisien memungkinkan UKM memenuhi pesanan dengan lebih cepat dan tepat waktu.</p>
+<p>Selain akses pasar yang lebih luas, sistem pembayaran digital juga telah meningkatkan efisiensi transaksi keuangan. Penggunaan dompet digital dan pembayaran nontunai tidak hanya mempermudah konsumen dalam berbelanja, tetapi juga membantu UKM dalam mencatat keuangan secara lebih akurat. Keuntungan lain dari ekonomi digital adalah strategi pemasaran berbasis data. Melalui analisis data pelanggan, UKM dapat memahami tren pasar dan perilaku konsumen dengan lebih baik. Misalnya, penggunaan iklan digital yang ditargetkan memungkinkan UKM menjangkau segmen pasar yang lebih spesifik sehingga efektivitas promosi meningkat.</p>
+<p>Meskipun menawarkan banyak manfaat, transformasi digital juga menghadirkan tantangan. UKM harus mampu beradaptasi dengan perkembangan teknologi dan meningkatkan literasi digital agar tetap kompetitif. Selain itu, keamanan data menjadi aspek penting yang harus diperhatikan dalam menjalankan bisnis secara digital untuk menghindari risiko peretasan dan penyalahgunaan informasi pelanggan. Dengan segala peluang dan tantangannya, ekonomi digital telah menjadi faktor kunci dalam mendorong pertumbuhan UKM. Jika dikelola dengan baik, digitalisasi dapat menjadi pendorong utama bagi keberlanjutan dan daya saing usaha kecil di era modern ini.</p>
+<p><b>Percakapan (Soal 13):</b><br>Dini: Teks tersebut sangat menarik dan bisa menambah wawasan kita, terutama jika kita berencana untuk mengembangkan suatu bisnis kecil.<br>Rio: Iya, pilihan katanya juga sangat mudah dimengerti sehingga orang yang awam terhadap istilah di bidang ekonomi juga mudah untuk memahami isi informasi yang disajikan.<br>Sena: Aku sependapat dengan kalian berdua, tetapi rasanya teks tersebut akan lebih baik jika disertai data pertumbuhan UKM dalam kurun waktu lima tahun terakhir atau pendapat ahli di bidang ekonomi.</p>`;
+
+const PASSAGE_E = `<div class="passage-title">Kutipan Cerpen Seragam<br><small>(Aris Kurniawan Basuki, dengan penyesuaian)</small></div>
+<p>Hampir 25 tahun lalu kami berpisah karena keluarga saya harus <i>boyongan</i> ke kota tempat kerja Ayah yang baru di luar pulau. Tak satupun barang tertinggal di rumah lama. Begitu juga dengan sahabatku, kami harus berpisah.</p>
+<p>Bertemu dengannya setelah sekian lama, mengingatkan kembali pada pengalaman kami dahulu. Pengalaman yang menjadikan dia, walau tidak setiap waktu, selalu lekat di ingatan saya. Tentu dia mengingatnya pula, bahkan saya yakin rasa yang diidapnya lebih besar efeknya. Karena sebagai seorang sahabat, dia jelas jauh lebih tulus dan setia daripada saya. Tak terasa mata saya mulai berkaca-kaca.</p>
+<p>Saat malam itu saya berada di sini, memperhatikannya belajar. Selesai belajar, dia menyuruh saya pulang karena hendak pergi mencari jangkrik. Saya langsung menyatakan ingin ikut, tapi dia keberatan. Ayah dan ibunya pun melarang. Saya sering mendengar cerita mengasyikan anak-anak beramai-ramai berangkat ke sawah selepas isya untuk mencari jangkrik. Sayang, Ayah tidak pernah membolehkan saya. Tapi malam itu saya nekat dan sahabat saya itu akhirnya tidak kuasa menolak. ”Tidak ganti baju?” tanya saya heran begitu dia langsung memimpin untuk berangkat. Itu hari Jumat. Seragam coklat Pramuka yang dikenakannya sejak pagi masih akan terpakai untuk bersekolah sehari lagi. Dia memang tidak memiliki banyak pakaian hingga seragam sekolah biasa dipakai kapan saja. Tapi memakainya untuk pergi ke sawah mencari jangkrik, rasanya sangat tidak elok.</p>
+<p>Saya mengambil alih obor dari tangannya. Rasanya belum terlalu lama kami berada di sana dan bumbung baru terisi beberapa ekor jangkrik ketika tiba-tiba angin berubah perangai. Kaget, pantat obor itu justru saya angkat tinggi-tinggi sehingga minyak mendorong sumbunya terlepas. Api dengan cepat berpindah membakar punggung saya! Terdengar teriakannya sembari melepaskan seragam coklatnya untuk dipakai menyabet punggung saya. Baju yang saya kenakan habis sepertiganya. Sahabat saya itu tanggap melingkupi tubuh saya dengan seragam coklatnya melihat saya mulai menangis dan menggigil antara kesakitan dan kedinginan. Sadar saya membutuhkan pertolongan secepatnya, dia menggendong saya lalu berlari sembari membujuk-bujuk saya untuk tetap tenang. Napasnya memburu kelelahan, tapi rasa tanggung jawab yang besar seperti memberinya kekuatan berlipat untuk tetap bersama saya.</p>`;
+
+const PASSAGE_F = `<div class="passage-title">Teknologi Hijau<br><small>Sumber: rri.co.id</small></div>
+<p><b>Paragraf 1:</b> (1) Perubahan iklim yang semakin nyata dan ancaman terhadap kelestarian bumi menuntut kita untuk mencari solusi efektif dalam menjaga keseimbangan alam. (2) Salah satu solusi yang paling menjanjikan adalah penggunaan teknologi hijau. (3) Teknologi hijau juga dikenal sebagai teknologi ramah lingkungan. (4) Teknologi ini merupakan inovasi yang dirancang untuk mengatasi berbagai tantangan lingkungan global, terutama terkait dengan perubahan iklim.</p>
+<p><b>Paragraf 2:</b> (1) Perubahan iklim, yang dipicu oleh peningkatan emisi gas rumah kaca akibat aktivitas manusia, menyebabkan cuaca ekstrem, suhu global yang meningkat, dan naiknya permukaan air laut. (2) Hal tersebut juga memicu deforestasi, polusi, dan mengancam keberagaman hayati di seluruh dunia. (3) Oleh karena itu, kita harus mengambil langkah tegas agar dampak perubahan iklim ini tidak semakin parah. (4) Teknologi hijau seperti energi terbarukan (tenaga surya, angin) dapat mengurangi ketergantungan pada bahan bakar fosil yang menjadi penyebab utama emisi gas rumah kaca planet ini.</p>
+<p><b>Paragraf 3:</b> (1) Teknologi hijau juga sangat penting dalam upaya adaptasi terhadap dampak perubahan iklim yang sudah tidak bisa dihindari. (2) Sistem pertanian presisi, infrastruktur tahan bencana alam, serta teknologi untuk menginvestigasi banjir dan kekeringan adalah contoh bagaimana teknologi hijau bisa membantu masyarakat beradaptasi dengan kondisi yang berubah.</p>
+<p><b>Paragraf 4:</b> (1) Dengan kondisi bumi yang semakin menghadapi tantangan besar, seperti pemanasan global, polusi, kelangkaan sumber daya, dan hilangnya keanekaragaman hayati, penerapan teknologi hijau adalah keharusan. (2) Melalui teknologi hijau, kita dapat mengurangi dampak negatif terhadap lingkungan dan memperbaiki kualitas hidup.</p>`;
+
+const SOAL = [
+{id:1, passage:PASSAGE_A, tipe:'pg', tanya:'Makna istilah <i>mobilisasi</i> pada paragraf kedua teks tersebut adalah ....',
+opts:['bergerak bersama','melangkah cepat','beradu cepat','mengatur bersama','berpikir bersama'],
+kunci:[0],
+bahas:'<b>Mengapa bergerak bersama?</b> Kalimatnya: “Masyarakat sektor swasta dan masyarakat sipil perlu mobilisasi...” Artinya pengerahan / penggerakan massa secara bersama untuk tindakan skala besar. KBBI: mobilisasi = pengerahan. Pilihan lain (melangkah cepat, beradu cepat, dll) tidak sesuai konteks pengerahan banyak pihak.'},
+{id:2, passage:PASSAGE_A, tipe:'pg', tanya:'Apa gagasan utama yang disampaikan pada paragraf pertama teks tersebut?',
+opts:['Ancaman plastik terhadap lautan.','Efek dari pemanasan laut.','Kadar tingkat keasaman laut.','Pemompaan CO2 ke atmosfer.','Ancaman bagi negara berkembang.'],
+kunci:[0],
+bahas:'<b>Mengapa ancaman plastik?</b> Paragraf 1 memang menyinggung pemanasan + asam + CO2 di 2 kalimat awal, tetapi 3 kalimat berikutnya fokus ke kemasan plastik dan prediksi 2050 “sampah plastik lebih banyak dari ikan” ditutup “ancaman besar”. Jadi ide pokoknya plastik.'},
+{id:3, passage:PASSAGE_A, tipe:'cek', tanya:'Mengapa lautan menghadapi ancaman pada 2050? <br><small>Pilihlah jawaban yang benar! Jawaban benar lebih dari satu.</small>',
+opts:['Sampah plastik di laut akan lebih banyak daripada jumlah ikan.','Lautan akan terus mengalami pemanasan dan semakin asam.','Manusia terus memompa lebih banyak CO2 ke atmosfer.','Jumlah ikan yang terancam punah semakin banyak.','Penggunaan plastik terus meningkat dan tidak dikelola dengan baik'],
+kunci:[0,4],
+bahas:'<b>Mengapa 2 jawaban?</b> Teks eksplisit: “pada tahun 2050 sampah plastik ... lebih banyak daripada jumlah ikan apabila kecenderungan ini terus berlanjut.” Kecenderungan = penggunaan plastik terus meningkat tanpa pengelolaan. Opsi pemanasan/CO2 memang ancaman umum, tapi bukan prediksi khusus 2050 di teks. Opsi ikan punah tidak ada di teks.'},
+{id:4, passage:PASSAGE_A, tipe:'bs', tanya:'“Solusi tersebut tidak mudah.” Mengapa penulis menggunakan kalimat tersebut? <br><small>Tentukan Benar atau Salah!</small>',
+labels:['Benar','Salah'],
+statements:['Menginformasikan bahwa pemecahan masalah sampah merupakan tanggung jawab utama kita sebagai masyarakat sipil sehingga sulit diselesaikan.','Menunjukkan bahwa permasalahan sampah plastik sangat rumit dan tidak bisa diselesaikan dalam jangka waktu singkat.','Membuktikan bahwa permasalahan rumit disebabkan pemecahan masalah yang bergantung pada perekonomian negara berkembang.'],
+kunci:['Salah','Benar','Salah'],
+bahas:'<b>Alasan:</b> (1) Salah – teks tak bilang tanggung jawab utama masyarakat sipil. (2) Benar – kalimat itu pengantar 2 fakta rumit: minyak murah → daur ulang mahal, + ekonomi berkembang → plastik naik. (3) Salah – menyederhanakan hanya ke negara berkembang, padahal ada 2 sebab, dan redaksinya terbalik (bukan “pemecahan bergantung”, tapi “ekonomi tumbuh → pakai plastik naik”).'},
+{id:5, passage:PASSAGE_B, tipe:'bs', tanya:'Apa permasalahan yang dihadapi tokoh aku dalam kutipan tersebut? <br><small>Tentukan Benar atau Salah!</small>',
+labels:['Benar','Salah'],
+statements:['Kekecewaan dan kesedihan tokoh aku terhadap sikap Ayahnya yang tidak mengizinkannya masuk sekolah di musim maddongi, padahal dia harus mempersiapkan diri untuk lomba.','Kemarahan hati tokoh aku terhadap Ayahnya yang melarang sekolah karena maddongi dan tugas menghalau burung.','Perasaan tertekan terhadap peraturan keluarga yang mengharuskan tidak masuk sekolah setiap musim maddongi, padahal ingin belajar.'],
+kunci:['Benar','Salah','Salah'],
+bahas:'<b>Alasan:</b> (1) Benar – “terpana, hampir menangis histeris, lomba dekat, takut hancur”. (2) Salah – ia menahan diri, sadar berteriak tak selesaikan masalah malah buat Ayah geram; bukan marah. (3) Salah – teks soal kejadian kali ini + lomba, bukan aturan “setiap musim”.'},
+{id:6, passage:PASSAGE_B, tipe:'cek', tanya:'Apa yang akan terjadi jika tokoh aku tidak datang ke rumah <i>iyye</i>? <br><small>Jawaban benar lebih dari satu.</small>',
+opts:['Iyye akan datang menasehati Ayah karena melarang tokoh aku untuk belajar.','Tokoh aku akan kehilangan kesempatan belajar untuk mengikuti lomba.','Ayah akan tetap melarang tokoh aku untuk belajar dan mengikuti lomba.','Permasalahan tokoh aku dan ayah akan berlarut karena tidak terselesaikan.','Tokoh aku tidak akan bisa fokus untuk belajar dan mengikuti lomba.'],
+kunci:[1,2,3,4],
+bahas:'<b>Alasan:</b> Hanya iyye yang “mampu menundukkan Ayah”. Tanpa lapor ke iyye, iyye tak tahu → tak datang (opsi 1 salah). Akibatnya larangan tetap, masalah berlarut, fokus & kesempatan lomba hilang (opsi 2-5 benar).'},
+{id:7, passage:PASSAGE_B, tipe:'pg', tanya:'Keterkaitan nilai sosial dalam kutipan cerpen tersebut dengan kehidupan sehari-hari adalah …',
+opts:['Masih ditemukan orang tua yang tidak memedulikan pendidikan anaknya demi membantu pekerjaan mereka.','Terbenturnya cita-cita anak karena tradisi keluarga yang mengutamakan anak mampu bekerja mandiri.','Asumsi bahwa bekerja lebih bermanfaat daripada sekolah yang dianggap tidak menghasilkan apa-apa.','Kebiasaan anak-anak tidak sekolah di musim maddongi demi tradisi keluarga.','Orang tua mengarahkan anak rajin bekerja membantu di sawah agar bisa lanjutkan hidup kelak.'],
+kunci:[0],
+bahas:'<b>Mengapa opsi 1?</b> Ayah menyuruh izin sekolah untuk bantu di sawah. Ini cermin realita: ada orang tua yang mengorbankan sekolah anak demi pekerjaan. Opsi lain soal tradisi mandiri / asumsi sekolah tak berguna tidak didukung teks.'},
+{id:8, passage:PASSAGE_C, tipe:'pg', tanya:'Tujuan penulis sesuai teks 1 adalah ...',
+opts:['Menginformasikan jenis dan rasa makanan yang mengandung Rhodamin B.','Menjelaskan dampak penggunaan Rhodamin B pada bahan-bahan industri.','Mengimbau agar masyarakat tidak menggunakan barang yang mengandung Rhodamin B.','Menginformasikan dampak mengonsumsi makanan yang mengandung Rhodamin B bagi tubuh.','Menjelaskan gejala yang timbul akibat mengonsumsi makanan yang mengandung Rhodamin B.'],
+kunci:[3],
+bahas:'<b>Mengapa opsi 4?</b> Teks 1 menyebut contoh makanan hanya sebagai pengantar, fokusnya ke bahaya: gangguan hati, kanker, menumpuk di lemak/hati, karsinogenik. Bukan soal rasa, bukan soal industri, dan bukan imbauan umum.'},
+{id:9, passage:PASSAGE_C, tipe:'pg', tanya:'Pernyataan yang tepat sesuai isi kedua teks berkaitan dengan Rhodamin B adalah ...',
+opts:['Rhodamin B sering disalahgunakan sebagai pewarna makanan karena menawarkan cita rasa yang tinggi.','Rhodamin B berdampak buruk bagi kesehatan, tetapi diperlukan pada industri tekstil dan kertas.','Rhodamin B berdampak buruk bagi kesehatan, tetapi mudah ditemukan pada kembang gula dan sirup.','Rhodamin B yang berbentuk serbuk kristal dan berwarna hijau digunakan pada industri tekstil dan kertas.','Rhodamin B berdampak buruk bagi kesehatan, meskipun dampak itu baru terlihat beberapa tahun kemudian.'],
+kunci:[4],
+bahas:'<b>Mengapa opsi 5?</b> Kedua teks sama-sama tekankan akumulasi jangka panjang: “puluhan tahun kemudian” (T1) dan “jangka panjang terakumulasi” (T2). Opsi 1 salah (teks: “terkesan” menawarkan rasa, bukan sebab). Opsi 2 kata “diperlukan” terlalu kuat (teks: “digunakan”). Opsi 4 tak lengkap (hijau <i>atau</i> ungu kemerahan).'},
+{id:10, passage:PASSAGE_C, tipe:'cek', tanya:'Mengapa kedua teks menyebutkan dampak kesehatan dari konsumsi pangan terkontaminasi Rhodamin B? <br><small>Jawaban benar lebih dari satu.</small>',
+opts:['Mendorong masyarakat untuk menghindari Rhodamin B dalam berbagai keperluan.','Meningkatkan kesadaran masyarakat tentang bahaya Rhodamin B dalam makanan.','Menunjukkan bahwa Rhodamin B aman digunakan dalam industri tekstil dan kertas.','Menjelaskan bahwa Rhodamin B adalah zat berbahaya jika dikonsumsi, terutama dalam jangka panjang.'],
+kunci:[1,3],
+bahas:'<b>Mengapa 2 & 4?</b> Tujuannya edukasi bahaya konsumsi jangka panjang. Opsi 1 salah karena Rhodamin B tetap legal untuk tekstil/kertas (bukan dihindari di semua keperluan). Opsi 3 salah total – tak ada klaim aman.'},
+{id:11, passage:PASSAGE_D, tipe:'info', tanya:'Bagan yang tepat untuk menggambarkan bagian penting teks tersebut adalah …',
+opts:[], kunci:[], bahas:'Soal asli memakai gambar bagan yang tidak terlampir. Struktur yang seharusnya: Pusat = Ekonomi Digital → 4 pendorong (e-commerce, pembayaran digital, pemasaran data, AI) → 3 manfaat (pasar luas, efisiensi transaksi, promosi efektif) → 2 tantangan (adaptasi/literasi, keamanan data) → hasil (pertumbuhan & daya saing UKM).'},
+{id:12, passage:PASSAGE_D, tipe:'bs', tanya:'Bagaimana pola pengembangan paragraf 1, 2, dan 3? <br><small>Tentukan Benar atau Salah!</small>',
+labels:['Benar','Salah'],
+statements:['Paragraf 1 pola sebab-akibat karena teknologi digital menyebabkan perubahan bagi UKM.','Paragraf 2 pola proses karena menjelaskan langkah-langkah memanfaatkan e-commerce.','Paragraf 3 pola klasifikasi karena membagi sistem pembayaran UKM jadi beberapa kategori.'],
+kunci:['Benar','Salah','Salah'],
+bahas:'<b>Alasan:</b> P1 benar sebab-akibat (digital → peluang UKM). P2 salah: bukan langkah berurutan, tapi uraian akibat/contoh (jangkau pasar, biaya, kirim). P3 salah: bukan klasifikasi, tapi uraian manfaat (efisiensi + pemasaran data).'},
+{id:13, passage:PASSAGE_D, tipe:'bs', tanya:'Mengapa pendapat Sena sangat baik dalam menilai keakuratan? <br><small>Dini-Rio-Sena. Sena usul tambah data 5 tahun + pendapat ahli.</small>',
+labels:['Setuju','Tidak Setuju'],
+statements:['Sena menyoroti teks harus mudah dipahami semua kalangan termasuk awam ekonomi.','Sena mempertimbangkan kelengkapan dan dasar bukti yang merupakan bagian menilai keakuratan.','Sena berinisiatif memperbaiki isi dengan pendapat pribadinya sebagai ahli ekonomi.'],
+kunci:['Tidak Setuju','Setuju','Tidak Setuju'],
+bahas:'<b>Alasan:</b> Mudah dipahami = pendapat Rio (1 Tidak Setuju). Usul data + ahli = kelengkapan & bukti keakuratan (2 Setuju). Sena tak klaim dirinya ahli (3 Tidak Setuju).'},
+{id:14, passage:PASSAGE_E, tipe:'pg', tanya:'“...keluarga saya harus <i>boyongan</i>...” Penggunaan kata <i>boyongan</i> memperjelas peristiwa ...',
+opts:['Pindahan yang sering dialami pegawai untuk promosi jabatan.','Pindah rumah dari kampung ke tempat jauh untuk jangka lama.','Pindah rumah bersama seluruh keluarga dengan membawa semua barang rumah tangga.','Pindah rumah untuk ikut tugas kedinasan orang tua di tempat baru yang sangat jauh.','Pindah rumah sementara dan akan pindah lagi.'],
+kunci:[2],
+bahas:'<b>Mengapa opsi 3?</b> <i>Boyong</i> = membawa serta keluarga + barang. Diperkuat “Tak satupun barang tertinggal di rumah lama.” Opsi dinas (4) memang latarnya, tapi makna kata <i>boyongan</i> sendiri adalah bawa semua barang.'},
+{id:15, passage:PASSAGE_E, tipe:'bs', tanya:'Peristiwa apa yang mungkin terjadi pada sahabatnya jika tokoh saya tidak ikut mencari jangkrik? <br><small>Tentukan Tepat / Tidak Tepat!</small>',
+labels:['Tepat','Tidak Tepat'],
+statements:['Sahabat masih memiliki seragam pramuka untuk dipakai.','Punggung sahabat tidak akan memiliki luka bakar.','Sahabat akan mencari jangkrik tanpa perlu berlari.'],
+kunci:['Tepat','Tepat','Tepat'],
+bahas:'<b>Alasan:</b> Kecelakaan karena saya yang angkat pantat obor → api bakar punggung saya → sahabat korbankan seragam untuk padamkan + selimuti + gendong sambil berlari. Tanpa saya ikut, seragam utuh, tak ada yang luka, tak perlu berlari gendong.'},
+{id:16, passage:PASSAGE_E, tipe:'cek', tanya:'Kalimat mana yang membuktikan karakter sahabat setia kawan? <br><small>Jawaban benar lebih dari satu.</small>',
+opts:['Saya langsung menyatakan ingin ikut, tapi dia keberatan.','Dia memang tidak memiliki banyak pakaian hingga seragam sekolah biasa dipakai kapan saja.','Sahabat saya itu tanggap melingkupi tubuh saya dengan seragam coklatnya.','Dia menggendong saya lalu berlari sembari membujuk-bujuk saya untuk tetap tenang.','Rasa tanggung jawab yang besar seperti memberinya kekuatan berlipat untuk tetap bersama saya.'],
+kunci:[2,3,4],
+bahas:'<b>Mengapa 3 terakhir?</b> Melingkupi tubuh, menggendong sambil menenangkan, dan tetap bersama karena tanggung jawab = bukti setia kawan. Dua opsi pertama hanya latar (penolakan awal karena khawatir, dan kemiskinan).'},
+{id:17, passage:PASSAGE_F, tipe:'bs', tanya:'Manakah kalimat yang memiliki penggunaan kata serapan yang tepat? <br><small>Tentukan Tepat / Tidak Tepat!</small>',
+labels:['Tepat','Tidak Tepat'],
+statements:['Kata “deforestasi” pada kalimat (2) paragraf kedua.','Kata “menginvestigasi” pada kalimat (2) paragraf ketiga.','Kata “polusi” pada kalimat (1) paragraf keempat.'],
+kunci:['Tepat','Tidak Tepat','Tepat'],
+bahas:'<b>Alasan:</b> <i>Deforestasi</i> baku untuk penggundulan hutan (Tepat). <i>Menginvestigasi</i> = penyelidikan pidana, tak cocok untuk banjir/kekeringan, seharusnya <i>memprediksi/memitigasi</i> (Tidak Tepat). <i>Polusi</i> baku untuk pencemaran (Tepat).'},
+{id:18, passage:PASSAGE_F, tipe:'pg', tanya:'Hubungan makna antara kalimat (2) dan (3) pada paragraf kedua adalah …',
+opts:['Akibat-sebab yang diperkuat dengan contoh deforestasi dan kerusakan lingkungan','Sebab-akibat yang mengajak pembaca untuk mengambil langkah tegas','Penegasan yang diperinci dengan contoh konkret yang bisa diaplikasikan pembaca','Perbandingan dari dua pandangan terkait dampak negatif deforestasi','Penyimpulan bahwa teknologi hijau merupakan solusi masalah deforestasi'],
+kunci:[1],
+bahas:'<b>Mengapa sebab-akibat + ajakan?</b> Kalimat (2) = dampak makin parah (sebab), kalimat (3) “Oleh karena itu, kita harus ambil langkah tegas...” = akibat berupa ajakan bertindak.'},
+{id:19, passage:PASSAGE_F, tipe:'info', tanya:'Kalimat yang tepat untuk mengakhiri uraian pada paragraf keempat adalah …',
+opts:[], kunci:[], bahas:'Opsi tidak terlampir di soal yang diberikan. Prinsip penutup: simpulan/ajakan tanpa info baru, misal: “Oleh karena itu, mari dukung dan terapkan teknologi hijau demi bumi lestari bagi generasi mendatang.”'},
+];
+
+let cur=0, answers={}, hasil={}, ragu={};
+function setFont(px){document.documentElement.style.setProperty('--soal-font',px+'px')}
+let sisa=4493; setInterval(()=>{sisa=Math.max(0,sisa-1);let h=String(Math.floor(sisa/3600)).padStart(2,'0'),m=String(Math.floor(sisa%3600/60)).padStart(2,'0'),s=String(sisa%60).padStart(2,'0');document.getElementById('timer').textContent=h+':'+m+':'+s},1000);
+
+function render(){
+const q=SOAL[cur];
+document.getElementById('nomor').textContent='Soal nomor '+(cur+1);
+document.getElementById('teks').innerHTML=q.passage;
+document.getElementById('prog').textContent=(cur+1)+' / '+SOAL.length;
+let h='<p><b>'+q.tanya+'</b></p>';
+if(q.tipe==='pg'){
+q.opts.forEach((o,i)=>{const c=answers[q.id]===i?'checked':'';h+='<label class="opt" id="opt-'+i+'"><input type="radio" name="q'+q.id+'" '+(c)+' onclick="jawab('+i+')"> <span>'+String.fromCharCode(65+i)+'. '+o+'</span></label>'});
+}else if(q.tipe==='cek'){
+q.opts.forEach((o,i)=>{const c=(answers[q.id]||[]).includes(i)?'checked':'';h+='<label class="opt" id="opt-'+i+'"><input type="checkbox" '+(c)+' onclick="jawabCek('+i+')"> <span>'+String.fromCharCode(65+i)+'. '+o+'</span></label>'});
+h+='<p style="font-size:13px;color:#666">Bisa pilih lebih dari satu.</p>';
+}else if(q.tipe==='bs'){
+h+='<table class="bs"><tr><th>Pernyataan</th><th>'+q.labels[0]+'</th><th>'+q.labels[1]+'</th></tr>';
+q.statements.forEach((s,i)=>{const v=(answers[q.id]||{})[i];h+='<tr id="row-'+i+'"><td>'+(i+1)+'. '+s+'</td><td style="text-align:center"><input type="radio" name="bs'+i+'" '+(v===q.labels[0]?'checked':'')+' onclick="jawabBS('+i+',0)"></td><td style="text-align:center"><input type="radio" name="bs'+i+'" '+(v===q.labels[1]?'checked':'')+' onclick="jawabBS('+i+',1)"></td></tr>'});
+h+='</table>';
+}else if(q.tipe==='info'){
+h+='<p style="color:#888">Soal ini membutuhkan gambar/opsi yang tidak terlampir. Baca pembahasan di bawah.</p><button class="btn check" onclick="periksa()">Lihat Pembahasan</button>';
+}
+h+='<div style="margin-top:10px;display:flex;gap:8px"><button class="btn check" onclick="periksa()">Periksa Jawaban</button><button class="btn ghost" onclick="ulangi()">Ulangi</button></div>';
+h+='<div class="explain" id="expl"></div>';
+document.getElementById('soal').innerHTML=h;
+document.getElementById('soal').scrollTop=0;
+const rb=document.getElementById('raguBtn');rb.textContent=ragu[q.id]?'☑ Ragu-ragu':'☐ Ragu-ragu';rb.style.background=ragu[q.id]?'#ff8f00':'#f7b500';
+if(hasil[q.id])showHasil(false);
+}
+function jawab(i){answers[SOAL[cur].id]=i}
+function jawabCek(i){const id=SOAL[cur].id;let a=answers[id]||[];a=a.includes(i)?a.filter(x=>x!==i):[...a,i];answers[id]=a}
+function jawabBS(i,li){const q=SOAL[cur];const id=q.id;let a=answers[id]||{};a[i]=q.labels[li];answers[id]=a}
+function ulangi(){const id=SOAL[cur].id;delete answers[id];delete hasil[id];render()}
+function nav(d){cur=Math.min(SOAL.length-1,Math.max(0,cur+d));render()}
+function toggleRagu(){const id=SOAL[cur].id;ragu[id]=!ragu[id];render()}
+function arraysEqual(a,b){if(a.length!==b.length)return false;let x=[...a].sort(),y=[...b].sort();return x.every((v,i)=>v===y[i])}
+function periksa(){
+const q=SOAL[cur],id=q.id;let benar=false,skor='';
+if(q.tipe==='pg'){const j=answers[id];if(j===undefined){alert('Pilih dulu jawabanmu!');return}benar=q.kunci.includes(j);
+q.opts.forEach((_,i)=>{const el=document.getElementById('opt-'+i);if(!el)return;el.classList.remove('correct','wrong');if(q.kunci.includes(i))el.classList.add('correct');else if(i===j)el.classList.add('wrong')});
+}else if(q.tipe==='cek'){const j=answers[id]||[];if(!j.length){alert('Pilih dulu minimal satu!');return}benar=arraysEqual(j,q.kunci);
+q.opts.forEach((_,i)=>{const el=document.getElementById('opt-'+i);el.classList.remove('correct','wrong');if(q.kunci.includes(i))el.classList.add('correct');if(j.includes(i)&&!q.kunci.includes(i))el.classList.add('wrong')});
+}else if(q.tipe==='bs'){const j=answers[id]||{};if(Object.keys(j).length<q.statements.length){alert('Isi semua pernyataan dulu!');return}
+benar=q.statements.every((_,i)=>j[i]===q.kunci[i]);
+q.statements.forEach((_,i)=>{const r=document.getElementById('row-'+i);r.classList.remove('row-ok','row-bad');r.classList.add(j[i]===q.kunci[i]?'row-ok':'row-bad')});
+}else{benar=null}
+if(benar!==null)hasil[id]=benar;
+showHasil(true);
+updateGrid();
+}
+function showHasil(scroll){
+const q=SOAL[cur],id=q.id;const ex=document.getElementById('expl');if(!ex)return;
+if(q.tipe==='info'){ex.innerHTML='<b class="t">ℹ️ Info:</b><br>'+q.bahas;ex.classList.add('show');return}
+const ok=hasil[id];let badge=ok===undefined?'':(ok?'<span class="badge ok">✅ BENAR</span>':'<span class="badge bad">❌ SALAH</span>');
+let kunciTxt='';
+if(q.tipe==='pg')kunciTxt='Kunci: <b>'+String.fromCharCode(65+q.kunci[0])+'. '+q.opts[q.kunci[0]]+'</b>';
+if(q.tipe==='cek')kunciTxt='Kunci: <b>'+q.kunci.map(i=>String.fromCharCode(65+i)).join(', ')+'</b>';
+if(q.tipe==='bs')kunciTxt='Kunci: <b>'+q.kunci.join(' | ')+'</b>';
+ex.innerHTML=badge+'<br><br>'+kunciTxt+'<br><br><b class="t">💡 Pembahasan:</b><br>'+q.bahas;
+ex.classList.add('show');if(scroll)ex.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function openDaftar(){document.getElementById('modal').classList.add('show');updateGrid()}
+function closeDaftar(){document.getElementById('modal').classList.remove('show')}
+function updateGrid(){
+const g=document.getElementById('grid');g.innerHTML='';
+SOAL.forEach((q,i)=>{const d=document.createElement('div');d.className='cell';d.textContent=i+1;
+if(i===cur)d.classList.add('cur');if(ragu[q.id])d.classList.add('ragu');
+if(hasil[q.id]===true)d.classList.add('benar');if(hasil[q.id]===false)d.classList.add('salah');
+d.onclick=()=>{cur=i;closeDaftar();render()};g.appendChild(d)});
+let b=Object.values(hasil).filter(v=>v===true).length,s=Object.values(hasil).filter(v=>v===false).length;
+document.getElementById('score').innerHTML='Sudah diperiksa: <b>'+(b+s)+' / '+SOAL.length+'</b> — Benar: <b style="color:green">'+b+'</b> | Salah: <b style="color:red">'+s+'</b>'+(b+s>0?'<br>Nilai (dari yang diperiksa): <b>'+Math.round(b/Math.max(1,b+s)*100)+'</b>':'');
+}
+function resetAll(){answers={};hasil={};ragu={};render();updateGrid()}
+render();updateGrid();
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')nav(1);if(e.key==='ArrowLeft')nav(-1)});
+</script>
+</body>
+</html>
